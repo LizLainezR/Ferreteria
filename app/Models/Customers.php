@@ -8,22 +8,48 @@ use Illuminate\Database\Eloquent\Model;
 class Customers extends Model
 {
     use HasFactory;
-    protected $primaryKey = 'id_unique_ced';
-    public $incrementing = false; // Esto es necesario para las claves primarias no incrementales
+    
+    protected $table = 'customers'; 
+    protected $primaryKey = 'id_unique';
+    public $incrementing = false;
+    protected $keyType = 'string';
 
     protected $fillable = [
-        'id_unique_ced',
+        'id_unique',
         'full_name',
+        'business_name',
+        'city',
         'address',
         'cell_phone',
+        'whatsapp',
         'email',
-        'id_types',
+        'idcustomer_types',
         'observations',
+        'status',
     ];
+    protected function casts(): array
+    {
+        return [
+            'status' => 'boolean'
+        ];
+    }
+    protected static function boot()
+    {
+        parent::boot();
 
+        // Configurar el campo 'status' automáticamente
+        static::creating(function ($customer) {
+            $customer->status = true;
+        });
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', true);
+    }
     // Relación inversa con CustomerType
     public function customerType()
     {
-        return $this->belongsTo(Customer_types::class, 'id_types');
+        return $this->belongsTo(CustomerType::class, 'idcustomer_types');
     }
 }

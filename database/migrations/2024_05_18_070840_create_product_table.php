@@ -36,24 +36,21 @@ return new class extends Migration
 
         Schema::create('product', function (Blueprint $table) {
             $table->id('id_product');
+            $table->string('sku')->unique(); // SKU único para cada producto
             $table->string('product_name');
-            $table->string('description');
-            $table->binary('img');
-            $table->float('cost');
+            $table->text('description');
+            $table->string('img')->nullable();
+            $table->decimal('unit_price', 10, 2);
             $table->integer('stock_quantity');
             $table->integer('stock_max');
             $table->integer('stock_min');
-            $table->boolean('status');
-            $table->unsignedBigInteger('id_category');
-            $table->unsignedBigInteger('id_pattern');
+            $table->boolean('status')->default(true);
+            $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('pattern_id');
             $table->timestamps();
-            $table->foreign('id_category')->references('id_category')->on('category');
-            $table->foreign('id_pattern')->references('id_pattern')->on('pattern');
-           
-        });
-
-
-    }
+            $table->foreign('category_id')->references('id_category')->on('category');
+            $table->foreign('pattern_id')->references('id_pattern')->on('pattern');
+        });}
 
     /**
      * Reverse the migrations.

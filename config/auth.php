@@ -112,4 +112,8 @@ return [
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
+    'tokens' => [
+        'lifetime' => env('AUTH_TOKEN_LIFETIME', 10080), // 10080 minutos = 1 semana
+        'expire_on_close' => false,
+    ],
 ];

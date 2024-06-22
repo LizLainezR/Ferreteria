@@ -14,13 +14,16 @@ return new class extends Migration
         Schema::create('module', function (Blueprint $table) {
             $table->id('id_module',);
             $table->string('description');
+            $table->boolean('status');
             $table->timestamps();
         });
     
         Schema::create('submodule',function(Blueprint $table){
             $table->id('id_submodule');
             $table->string('description');
+            $table->string('url'); 
             $table->unsignedBigInteger('id_module');
+            $table->boolean('status');
             $table->timestamps();
             $table->foreign('id_module')->references('id_module')->on('module');
         });

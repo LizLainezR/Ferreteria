@@ -16,14 +16,26 @@ class Rol extends Model
 
     protected $fillable = [
         'role_name',
+        'status'
     ];
+    protected function casts(): array
+    {
+        return [
+            'status' => 'boolean'
+        ];
+    }
 
+    public function scopeActive($query)
+    {
+        return $query->where('status', true);
+    }
     // Relación con el modelo Usuario
     public function user(){
-        Log::info('Dentro del método user() en el modelo Rol');
-        dd('Dentro del método user() en el modelo Rol');
-        return $this->hasMany(User::class, 'id_role', 'id_role');
+        return $this->hasMany(User::class, 'id_role','id_role');    
     }
- 
+    public function permission(){
+        return $this->hasMany(Permission::class, 'id_role','id_role');    
+    }
+
   
 }

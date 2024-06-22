@@ -16,8 +16,13 @@ class Module extends Model
 
     protected $fillable = [
         'description',
+        'status'
     ];
 
+    public function scopeActive($query)
+    {
+        return $query->where('status', true);
+    }
     public function submodulos(){
         return $this->hasMany(Submodule::class, 'id_module', 'id_module');
     }

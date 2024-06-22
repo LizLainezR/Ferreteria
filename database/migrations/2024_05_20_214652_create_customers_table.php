@@ -12,26 +12,29 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('customer_types', function (Blueprint $table) {
-            $table->id("id_types"); 
+            $table->id("idcustomer_types"); 
             $table->string('name'); 
+            $table->boolean('status');
             $table->timestamps(); 
         });
         
-
+        
         Schema::create('customers', function (Blueprint $table) {
-            $table->string('id_unique_ced')->primary(); // Clave primaria
+            $table->string('id_unique')->primary(); 
             $table->string('full_name');
+            $table->string('business_name');
+            $table->string('city');
             $table->string('address'); // Dirección del cliente
             $table->string('cell_phone'); // Teléfono del cliente
+            $table->string('whatsapp'); // Teléfono del cliente
             $table->string('email');
-            $table->unsignedBigInteger('id_types'); // Clave foránea
+            $table->unsignedBigInteger('idcustomer_types'); // Clave foránea
             $table->text('observations')->nullable();   
+            $table->boolean('status');
             $table->timestamps();
-            
-            // Definición de la clave foránea
-            $table->foreign('id_types')->references('id_types')->on('customer_types')->onDelete('cascade');
+            $table->foreign('idcustomer_types')->references('idcustomer_types')->on('customer_types')->onDelete('cascade');
         });
-    }
+        }
 
     /**
      * Reverse the migrations.

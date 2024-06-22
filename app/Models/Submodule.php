@@ -14,13 +14,20 @@ class Submodule extends Model
 
     protected $fillable = [
         'description',
-        'id_module'
+        'id_module',
+        'status'
     ];
-
+    public function scopeActive($query)
+    {
+        return $query->where('status', true);
+    }
 
     public function module()
     { return $this->belongsTo(Module::class, 'id_module');}
 
+    public function permission(){
+        return $this->hasMany(Permission::class, 'id_submodule','id_submodule');    
+    }
 
     
 }

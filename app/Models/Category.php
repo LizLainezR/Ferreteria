@@ -16,8 +16,11 @@ class Category extends Model
         'status',
     ];
 
-    // Relación uno a muchos con Product
-    public function products()
+    public function scopeActive($query)
+    {
+        return $query->where('status', true);
+    }
+      public function products()
     {
         return $this->hasMany(Product::class, 'id_category');
     }

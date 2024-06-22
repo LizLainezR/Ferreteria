@@ -8,31 +8,48 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     use HasFactory;
+    protected $table = 'product'; // Nombre de la tabla en la base de datos
 
-    protected $primaryKey = 'id_product';
+    protected $primaryKey = 'id_product'; // Clave primaria de la tabla
 
+    // Los campos de la tabla que se pueden llenar de forma masiva
     protected $fillable = [
+        'sku',
         'product_name',
         'description',
         'img',
-        'cost',
+        'unit_price',
         'stock_quantity',
         'stock_max',
         'stock_min',
         'status',
-        'id_category',
-        'id_pattern',
+        'category_id',
+        'pattern_id',
     ];
 
-    // Relación inversa con Category
+    protected function casts(): array
+    {
+        return [
+            'status' => 'boolean'
+        ];
+    }
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Configurar el campo 'status' automáticamente
+        static::creating(function ($customer) {
+            $customer->status = true;
+        });
+    }
     public function category()
     {
-        return $this->belongsTo(Category::class, 'id_category');
+        return $this->belongsTo(Category::class, 'category_id');
     }
 
     // Relación inversa con Pattern
     public function pattern()
     {
-        return $this->belongsTo(Pattern::class, 'id_pattern');
+        return $this->belongsTo(Pattern::class, 'pattern_id');
     }
 }

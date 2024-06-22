@@ -14,7 +14,10 @@ class Payment extends Model
         'name_payment',
         'status',
     ];
-
+    public function scopeActive($query)
+    {
+        return $query->where('status', true);
+    }
     // Relación uno a muchos con SaleHeader
     public function saleHeaders()
     {

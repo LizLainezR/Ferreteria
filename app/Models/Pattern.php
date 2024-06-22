@@ -17,6 +17,10 @@ class Pattern extends Model
         'status',
     ];
 
+    public function scopeActive($query)
+    {
+        return $query->where('status', true);
+    }
     // Relación inversa con Trademark
     public function trademark()
     {

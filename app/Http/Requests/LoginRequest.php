@@ -14,26 +14,24 @@ class LoginRequest extends FormRequest
 
     public function rules(): array
     {
-        $reglas = [  
-            'username' => ['required', 'string'],
-            'password' => ['required', 'string'],
+        return [
+            'username' => ['required', 'string', 'max:255'],
+            'password' => ['required', 'string', 'min:8'],
             'remember_me' => ['nullable', 'boolean'],
         ];
-        
-       // dd('Reglas de validación:', $reglas);
-        
-        return $reglas;
     }
-
-    public function menssages(): array
+    
+    public function messages(): array
     {
-        $menssages=[
-                'username.required' => 'El nombre de usuario es obligatorio.',
-                'username.string' => 'El nombre de usuario debe ser una cadena de caracteres.',
-                'password.required' => 'La contraseña es obligatoria.',
-                'password.string' => 'La contraseña debe ser una cadena de caracteres.',
-                'remember_me.boolean' => 'El campo recordarme debe ser verdadero o falso.',
-        ];
-        return $menssages;
+        return [
+            'username.required' => 'El nombre de usuario es requerido.',
+            'username.string' => 'El nombre de usuario debe ser una cadena de texto.',
+            'username.max' => 'El nombre de usuario no puede tener más de :max caracteres.',
+            
+            'password.required' => 'La contraseña es requerida.',
+            'password.string' => 'La contraseña debe ser una cadena de texto.',
+            'password.min' => 'La contraseña debe tener al menos :min caracteres.',
+            
+            'remember_me.boolean' => 'El campo "Recordarme" debe ser verdadero o falso.',
+        ];}
     }
-}
