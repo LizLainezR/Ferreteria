@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Module;
+use App\Models\Submodule;
+use App\Models\Permission;
 use App\Http\Requests\ModuleRequest;
 use App\Http\Requests\SubmoduleRequest;
-use App\Models\Submodule;
+
 
 class ModuleController extends Controller
 {
@@ -43,7 +45,22 @@ class ModuleController extends Controller
           'submodule'=>$submodule
         ];
     }
+/////////////////PERSMISOS
+public function getMenuByRole($roleId)
+    {
+        $permissions = Permission::where('id_role', $roleId)->get(['id_submodule']);
+        $submoduleIds = $permissions->pluck('id_submodule');
 
+        $submodules = Submodule::whereIn('id_submodule', $submoduleIds)->get(['id_submodule as id', 'description', 'id_module','url']);
+        $moduleIds = $submodules->pluck('id_module')->unique();
+
+        $modules = Module::whereIn('id_module', $moduleIds)->get(['id_module as id', 'description']);
+        foreach ($modules as $module) {
+            $module->submodule = $submodules->where('id_module', $module->id)->values();
+        }
+
+        return response()->json($modules);
+    }
 
 
 }
